@@ -1,3 +1,4 @@
 flowers/
 wandb/
 docker/flowers/
+__pycache__/

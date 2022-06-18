@@ -19,4 +19,4 @@ python3 download.py
 
 # Inference with your own image
 
-python3 inference.py --filepath="FILEPATH_OF_YOUR_IMAGEe
+python3 inference.py --filepath="FILEPATH_OF_YOUR_IMAGE"
