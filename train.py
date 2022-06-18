@@ -1,4 +1,3 @@
-from cgi import test
 import tensorflow as tf
 from data import *
 from model import base_model, fine_tuned_model, other_model

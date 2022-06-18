@@ -1,4 +1,3 @@
-from multiprocessing.spawn import prepare
 import tensorflow as tf
 from random import randint, random
 from model import base_model, other_model, fine_tuned_model
@@ -13,23 +12,19 @@ import matplotlib.pyplot as plt
 HEIGHT = 256
 WIDTH = 256
 data_path = "flowers"
+model_path = "models/"
 
 
 def load_model(name):
     """
     Load one the model & setting the weights we found after training
     """
-
     if name == "finetuned":
-        """model = fine_tuned_model()
-        model.load_weights("finetuned_model/cp.cpkt")"""
-        model = tf.keras.models.load_model("finetuned_model.h5")
+        model = tf.keras.models.load_model(model_path + "finetuned_model.h5")
     elif name == "base":
-        model = base_model()
-        model.load_weights("base_model/cp.cpkt")
+        model = tf.keras.models.load_model(model_path + "base_model.h5")
     elif name == "other":
-        model = other_model()
-        model.load_weights("other_model/cp.cpkt")
+        model = tf.keras.models.load_model(model_path + "other_model.h5")
     return model
 
 
@@ -46,6 +41,15 @@ def inferance(model, image):
 
 
 def random_sample():
+    """
+    Generated a random number between 0 and the size of the image folder,
+    and return the associated image and labels
+    Args :
+        - Nothing
+    Output :
+        - X (image): the random sample selected
+        - y_true (str): the label
+    """
     daisy_path = glob(os.path.join(data_path, "daisy/*"))
     dandelion_path = glob(os.path.join(data_path, "dandelion/*"))
     roses_path = glob(os.path.join(data_path, "roses/*"))
@@ -69,6 +73,26 @@ def random_sample():
     X = cv2.imread(X_path[random_n], cv2.IMREAD_COLOR)
 
     return X, y_true
+
+
+def custom_image(filepath):
+    """
+    Take a filepath and show the predicted label that the model gives to
+    the image
+
+    Args :
+        - filepath (str) : the path of the image to classify
+    Output :
+        Nothing
+    """
+    original_image = cv2.imread(filepath, cv2.IMREAD_COLOR)
+    image = prepare_image(original_image)
+    model = load_model("finetuned")
+    prediction = model.predict(image)
+    class_predicted = classnames[np.armgax(prediction)]
+    plt.imshow(X_original)
+    plt.title(f""" Predicted label : {class_predicted}""")
+    plt.show()
 
 
 if __name__ == "__main__":
