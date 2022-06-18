@@ -7,6 +7,6 @@ if __name__ == "__main__":
     print("Downloading flower images from %s..." % DOWNLOAD_URL)
     urllib.request.urlretrieve(DOWNLOAD_URL, "flower_photos.tgz")
 
-    tar = tarfile.open("flower_photos.tgz", "r:gz")
+    tar = tarfile.open("flowers.tgz", "r:gz")
     tar.extractall()
     tar.close()

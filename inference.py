@@ -1,10 +1,14 @@
+import filecmp
 import tensorflow as tf
 from random import randint, random
+from model import base_model, other_model, fine_tuned_model
 import cv2
 import numpy as np
 from data import classnames
 from glob import glob
 import os
+import matplotlib.pyplot as plt
+import argparse
 
 
 HEIGHT = 256
@@ -87,8 +91,8 @@ def custom_image(filepath):
     image = prepare_image(original_image)
     model = load_model("finetuned")
     prediction = model.predict(image)
-    class_predicted = classnames[np.armgax(prediction)]
-    plt.imshow(X_original)
+    class_predicted = classnames[np.argmax(prediction)]
+    plt.imshow(original_image)
     plt.title(f""" Predicted label : {class_predicted}""")
     plt.show()
 
@@ -96,12 +100,13 @@ def custom_image(filepath):
 if __name__ == "__main__":
     # Load the differents flowers photos
 
-    X_sample, y_sample = random_sample()
-    X_original = X_sample
-    X_sample = prepare_image(X_sample)
+    parser = argparse.ArgumentParser(description="Flower")
+    parser.add_argument(
+        "--filepath",
+        type=str,
+        required=True,
+    )
+    args = parser.parse_args()
+    filepath = args.filepath
 
-    model = load_model("finetuned")
-    prediction = model.predict(X_sample)
-
-    class_predicted = classnames[np.argmax(prediction)]
-    print(f""" Predicted label : {class_predicted}, actual label : {y_sample}""")
+    custom_image(filepath=filepath)
